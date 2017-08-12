@@ -3,23 +3,23 @@ require 'rails_helper'
 feature "register and login", :type => :feature do
 
   scenario "login and logout" do
-      user = User.create!( :email => "foobar@example.com", :password => "12345678")
+     user = User.create!( :email => "foobar@example.com", :password => "12345678")
+ 
+     visit "/users/sign_in"
+ 
+     within("#new_user") do
+       fill_in "Email", with: "foobar@example.com"
+       fill_in "Password", with: "12345678"
+     end
+ 
+     click_button "Log in"  # 点击登入按钮
 
-      visit "/users/sign_in"
+     expect(page).to have_content("Signed in successfully")
+ 
+     click_link "登出"  # 点击主选单的登出超连结
 
-      within("#new_user") do
-        fill_in "Email", with: "foobar@example.com"
-        fill_in "Password", with: "12345678"
-      end
-
-      click_button "Log in"  # 点击登入按钮
-
-      expect(page).to have_content("Signed in successfully")
-
-      click_link "登出"  # 点击主选单的登出超连结
-
-      expect(page).to have_content("Signed out successfully")
-    end
+     expect(page).to have_content("Signed out successfully")
+   end
 
   scenario "register" do
     visit "/users/sign_up"  # 浏览注册页面
